@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Roost · stays as a commons · book direct · zero middleman</title>
+<meta name="description" content="A marketplace owned by the hosts. Browse off-grid cabins, treehouses, bothies, yurts across the UK & Ireland. Every booking goes direct — zero fees taken, zero data harvested.">
+<meta name="theme-color" content="#18171a">
+<link rel="alternate" type="application/json" title="stays-protocol registry" href="data/registry.json">
+<style>
+:root{
+  --void:#18171a;
+  --deep:#1f1e22;
+  --surface:#27262b;
+  --raised:#302f35;
+  --moss:#2d4a3e;
+  --moss-bright:#3d6a55;
+  --leaf:#6b9d6f;
+  --ember:#c97a3d;
+  --ember-glow:rgba(201,122,61,0.12);
+  --gold:#c9a84c;
+  --linen:#ebe5d6;
+  --text:#d4cfc8;
+  --muted:#7a7681;
+  --dim:#48454d;
+  --border:rgba(235,229,214,0.08);
+  --border-strong:rgba(235,229,214,0.18);
+  --bad:#c75a4a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--void);
+  color:var(--text);
+  font-family:-apple-system,system-ui,sans-serif;
+  font-size:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--ember);text-decoration:none}
+button{font-family:inherit;color:inherit;cursor:pointer}
+
+/* Header */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(24,23,26,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:14px 28px;display:flex;justify-content:space-between;align-items:center;
+}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--linen);letter-spacing:0.02em}
+.brand .glyph{color:var(--ember);font-size:28px}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-left:10px}
+.nav{display:flex;gap:22px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase}
+.nav a{color:var(--muted)}
+.nav a:hover{color:var(--ember)}
+.nav .cta{background:var(--ember);color:var(--void);padding:7px 14px;border-radius:4px;font-weight:700}
+.nav .cta:hover{background:#d68850}
+
+/* Hero */
+.hero{
+  position:relative;padding:80px 28px 60px;
+  background:radial-gradient(ellipse at top right,var(--ember-glow) 0%,var(--void) 70%);
+  border-bottom:1px solid var(--border);text-align:center;
+}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--ember);margin-bottom:18px;
+}
+h1{
+  font-family:'Cormorant Garamond',serif;font-size:72px;line-height:1.05;color:var(--linen);
+  margin:0 auto 22px;font-weight:400;max-width:880px;
+}
+h1 em{color:var(--ember);font-style:italic}
+.lead{font-size:19px;color:var(--text);max-width:660px;margin:0 auto 28px;line-height:1.7}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.btn{
+  padding:14px 26px;border:0;border-radius:4px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;
+  cursor:pointer;text-decoration:none;display:inline-block;
+}
+.btn.primary{background:var(--ember);color:var(--void)}
+.btn.primary:hover{background:#d68850}
+.btn.secondary{background:transparent;color:var(--linen);border:1px solid var(--border-strong)}
+.btn.secondary:hover{border-color:var(--ember);color:var(--ember)}
+
+/* Counter */
+.counter-strip{
+  background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:30px 28px;display:flex;justify-content:center;gap:60px;flex-wrap:wrap;
+}
+.stat{text-align:center}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--linen);line-height:1;font-weight:500}
+.stat-val.ember{color:var(--ember)}
+.stat-val.leaf{color:var(--leaf)}
+.stat-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* Section base */
+section{padding:64px 28px;max-width:1200px;margin:0 auto}
+.section-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ember);margin-bottom:8px}
+.section-h2{font-family:'Cormorant Garamond',serif;font-size:46px;color:var(--linen);margin-bottom:14px;font-weight:400;line-height:1.15}
+.section-h2 em{color:var(--ember);font-style:italic}
+.section-lead{font-size:16px;color:var(--muted);max-width:640px;margin-bottom:36px;line-height:1.7}
+
+/* Filter bar */
+.filters{
+  display:flex;gap:10px;flex-wrap:wrap;
+  padding:18px 22px;background:var(--deep);border:1px solid var(--border);border-radius:6px;
+  margin-bottom:24px;align-items:center;
+}
+.filter-input{
+  background:var(--surface);border:1px solid var(--border);color:var(--text);
+  padding:9px 12px;border-radius:4px;font-family:inherit;font-size:13px;
+}
+.filter-input:focus{outline:none;border-color:var(--ember)}
+.filter-chip{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:7px 12px;border:1px solid var(--border);border-radius:14px;
+  cursor:pointer;color:var(--muted);transition:all 0.15s;
+}
+.filter-chip:hover{color:var(--linen);border-color:var(--border-strong)}
+.filter-chip.active{background:var(--ember);color:var(--void);border-color:var(--ember);font-weight:600}
+.filter-result{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.1em;margin-left:auto}
+
+/* Stay grid */
+.stay-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
+.stay-card{
+  background:var(--deep);border:1px solid var(--border);border-radius:6px;overflow:hidden;
+  display:flex;flex-direction:column;transition:all 0.18s;
+}
+.stay-card:hover{border-color:var(--ember);transform:translateY(-3px)}
+.stay-card.featured{border-color:var(--ember-glow);box-shadow:0 0 0 1px var(--ember-glow)}
+.stay-img{
+  height:200px;
+  background:linear-gradient(135deg,var(--moss) 0%,var(--void) 100%);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border);position:relative;
+}
+.stay-img .glyph{font-size:90px;color:var(--ember);text-shadow:0 0 30px rgba(201,122,61,0.4);font-family:'Cormorant Garamond',serif}
+.stay-img .badge-featured{
+  position:absolute;top:12px;left:12px;
+  background:var(--ember);color:var(--void);
+  font-family:'JetBrains Mono',monospace;font-size:9px;padding:4px 8px;border-radius:2px;
+  letter-spacing:0.12em;text-transform:uppercase;font-weight:700;
+}
+.stay-img .badge-verified{
+  position:absolute;top:12px;right:12px;
+  background:rgba(107,157,111,0.85);color:var(--void);
+  font-family:'JetBrains Mono',monospace;font-size:9px;padding:4px 8px;border-radius:2px;
+  letter-spacing:0.12em;text-transform:uppercase;font-weight:700;
+}
+.stay-body{padding:20px 22px;flex:1;display:flex;flex-direction:column}
+.stay-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--linen);margin-bottom:4px}
+.stay-loc{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.stay-tagline{color:var(--text);font-size:13px;line-height:1.65;margin-bottom:12px;flex:1}
+.stay-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;padding-top:12px;border-top:1px solid var(--border)}
+.stay-price{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--ember)}
+.stay-price small{font-family:-apple-system,system-ui,sans-serif;font-size:12px;color:var(--muted);margin-left:3px}
+.stay-stars{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold)}
+.stay-stars .grey{color:var(--muted)}
+.stay-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px}
+.stay-tag{
+  background:var(--surface);color:var(--muted);
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  padding:3px 7px;border-radius:2px;letter-spacing:0.05em;
+}
+.stay-cta{
+  background:var(--ember);color:var(--void);
+  padding:11px;border-radius:4px;border:0;text-align:center;width:100%;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;
+  display:block;text-decoration:none;
+}
+.stay-cta:hover{background:#d68850;color:var(--void)}
+.stay-direct-note{
+  text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--leaf);
+  margin-top:8px;letter-spacing:0.1em;text-transform:uppercase;
+}
+
+/* Manifesto */
+.manifesto{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 28px}
+.manifesto-inner{max-width:780px;margin:0 auto;text-align:center}
+.manifesto-lines{font-family:'Cormorant Garamond',serif;font-size:30px;line-height:1.55;color:var(--linen);font-style:italic;margin-bottom:36px}
+.manifesto-lines em{color:var(--ember)}
+.principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:30px}
+.principle{padding:22px;background:var(--void);border:1px solid var(--border);border-radius:5px;text-align:left}
+.principle h4{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--linen);margin-bottom:8px}
+.principle p{font-size:13px;color:var(--text);line-height:1.7}
+
+/* Compare vs Airbnb */
+.compare-section{padding:80px 28px;max-width:1100px;margin:0 auto}
+.compare{
+  width:100%;border-collapse:collapse;background:var(--deep);
+  border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:30px;
+}
+.compare th,.compare td{padding:16px 20px;border-bottom:1px solid var(--border);font-size:14px;text-align:left}
+.compare th{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;background:var(--surface)}
+.compare th.roost{color:var(--ember);background:var(--ember-glow)}
+.compare th.airbnb{color:var(--bad)}
+.compare td:first-child{color:var(--linen);font-weight:500}
+.compare .yes{color:var(--leaf)}
+.compare .no{color:var(--bad)}
+.compare td.roost-col{background:rgba(201,122,61,0.04)}
+
+/* For hosts */
+.hosts{background:linear-gradient(135deg,var(--moss) 0%,var(--void) 100%);padding:80px 28px;border-top:1px solid var(--moss-bright)}
+.hosts-inner{max-width:1100px;margin:0 auto}
+.hosts-grid{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center;margin-top:30px}
+@media (max-width:880px){.hosts-grid{grid-template-columns:1fr}}
+.coop-card{
+  background:var(--void);border:1px solid var(--ember);border-radius:8px;
+  padding:34px 36px;
+}
+.coop-card h3{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--linen);margin-bottom:10px;font-weight:400}
+.coop-price{font-family:'Cormorant Garamond',serif;font-size:54px;color:var(--ember);margin:14px 0;font-weight:500}
+.coop-price small{font-size:15px;color:var(--muted);margin-left:6px}
+.coop-list{list-style:none;padding:0;font-size:14px;line-height:2;color:var(--text);margin:18px 0}
+.coop-list li:before{content:"✓ ";color:var(--leaf);margin-right:6px}
+.coop-list li.dim:before{content:"× ";color:var(--bad);margin-right:6px}
+.coop-list li.dim{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--dim)}
+
+/* Protocol */
+.protocol-section{padding:80px 28px;max-width:1100px;margin:0 auto}
+.code-block{
+  background:var(--deep);border:1px solid var(--border);border-radius:6px;
+  padding:22px 26px;margin:20px 0;
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);
+  line-height:1.7;overflow-x:auto;
+}
+.code-block .k{color:var(--ember)}
+.code-block .v{color:var(--leaf)}
+.code-block .s{color:var(--gold)}
+.code-block .c{color:var(--muted)}
+
+/* Map / locations */
+.locations{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:24px}
+.location-pill{
+  background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  padding:12px 14px;text-align:center;cursor:pointer;transition:all 0.15s;
+}
+.location-pill:hover{border-color:var(--ember);color:var(--ember)}
+.location-pill .ln{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--linen);display:block;margin-bottom:3px}
+.location-pill .lc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.06em}
+
+/* Footer */
+footer{
+  background:var(--deep);border-top:1px solid var(--border);
+  padding:50px 28px 36px;
+}
+.footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--linen);margin-bottom:10px}
+.footer-blurb{color:var(--muted);font-size:13px;line-height:1.7;max-width:340px}
+.footer-col h4{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--linen);margin-bottom:10px}
+.footer-col a{display:block;color:var(--muted);font-size:13px;padding:3px 0}
+.footer-col a:hover{color:var(--ember)}
+.footer-bottom{max-width:1100px;margin:30px auto 0;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--dim);text-transform:uppercase;flex-wrap:wrap;gap:14px}
+@media (max-width:780px){.footer-grid{grid-template-columns:1fr 1fr}h1{font-size:42px}.section-h2{font-size:30px}section,.manifesto,.hosts{padding:50px 22px}.counter-strip{gap:30px;padding:24px 22px}.stat-val{font-size:30px}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    <span class="glyph">◊</span>
+    <span>roost</span>
+    <span class="sub">stays as a commons</span>
+  </div>
+  <nav class="nav">
+    <a href="#browse">Browse</a>
+    <a href="#manifesto">Why</a>
+    <a href="host.html">For hosts</a>
+    <a href="protocol.html">Protocol</a>
+    <a href="host.html#join" class="cta">List your stay</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" style="max-width:none;margin:0">
+  <div class="eyebrow">a marketplace owned by the hosts · not the platform</div>
+  <h1>Book direct. <em>Pay the host, not the middleman.</em></h1>
+  <p class="lead">
+    Off-grid cabins · treehouses · bothies · yurts · shepherd huts. Across the UK & Ireland.
+    Every stay you book here lands in the host's pocket, not a platform's. Zero booking fees.
+    Zero data harvested. No "Genius" pressure. Just stays.
+  </p>
+  <div class="hero-cta">
+    <a href="#browse" class="btn primary">Browse stays →</a>
+    <a href="#manifesto" class="btn secondary">Why this exists</a>
+  </div>
+</section>
+
+<!-- COUNTER -->
+<div class="counter-strip">
+  <div class="stat"><div class="stat-val" id="stat-stays">33</div><div class="stat-lbl">Stays listed</div></div>
+  <div class="stat"><div class="stat-val ember" id="stat-hosts">12</div><div class="stat-lbl">Sovereign hosts</div></div>
+  <div class="stat"><div class="stat-val" id="stat-countries">3</div><div class="stat-lbl">Countries</div></div>
+  <div class="stat"><div class="stat-val gold" id="stat-rating">4.86★</div><div class="stat-lbl">Avg review · 4,844 total</div></div>
+  <div class="stat"><div class="stat-val leaf" id="stat-saved">£89,400</div><div class="stat-lbl">Saved in fees · YTD</div></div>
+</div>
+
+<!-- BROWSE -->
+<section id="browse">
+  <div class="section-eyebrow">The roost · 12 founding hosts</div>
+  <h2 class="section-h2">Find your <em>corner</em>.</h2>
+  <p class="section-lead">Every listing here is a real, sovereign host who publishes their own bookable availability. Click through and you go to their site — not ours.</p>
+
+  <div class="filters">
+    <input type="text" class="filter-input" placeholder="Search location, name, vibe…" id="search">
+    <button class="filter-chip active" data-filter="all">All</button>
+    <button class="filter-chip" data-filter="off-grid">Off-grid</button>
+    <button class="filter-chip" data-filter="dog-friendly">Dogs welcome</button>
+    <button class="filter-chip" data-filter="kids">Family</button>
+    <button class="filter-chip" data-filter="romantic">Romantic</button>
+    <button class="filter-chip" data-filter="adults-only">Adults only</button>
+    <button class="filter-chip" data-filter="featured">Featured</button>
+    <span class="filter-result" id="filter-result">12 hosts</span>
+  </div>
+
+  <div class="stay-grid" id="stay-grid"></div>
+</section>
+
+<!-- MANIFESTO -->
+<div class="manifesto" id="manifesto">
+  <div class="manifesto-inner">
+    <div class="section-eyebrow">Why roost exists</div>
+    <div class="manifesto-lines">
+      Airbnb takes <em>15-17%</em> from every booking.<br>
+      Booking.com takes <em>17%</em> on top.<br>
+      Both harvest the guest's data and the host's relationship.<br>
+      <br>
+      We think hosts should keep what they earn.<br>
+      And guests should know who they're staying with.<br>
+      <em>That's the whole pitch.</em>
+    </div>
+
+    <div class="principles">
+      <div class="principle">
+        <h4>◊ Zero booking fees</h4>
+        <p>roost takes nothing per booking · ever · in any direction · from guest or host. Hosts who join the co-op pay £20/mo flat (membership · not commission).</p>
+      </div>
+      <div class="principle">
+        <h4>⌬ Hosts own the data</h4>
+        <p>No guest data flows through us. Bookings go direct, host-to-guest. We aggregate availability via open iCal · we never see the transaction.</p>
+      </div>
+      <div class="principle">
+        <h4>◬ Open protocol</h4>
+        <p>Anyone can publish a stays.json file. Anyone can build a browser over it. roost is one front door · not the only one. The protocol is public domain.</p>
+      </div>
+      <div class="principle">
+        <h4>≋ Cooperatively owned</h4>
+        <p>Members vote on rules, features, and money. No VCs. No exit. If roost grows, members own roost. If roost dies, the protocol keeps working.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE -->
+<section class="compare-section">
+  <div class="section-eyebrow">The numbers</div>
+  <h2 class="section-h2">What you keep when you <em>book direct</em>.</h2>
+  <p class="section-lead">On a £1,000 booking · per channel · for the host.</p>
+
+  <table class="compare">
+    <thead>
+      <tr><th>Where you book</th><th class="airbnb">Airbnb</th><th>Booking.com</th><th class="roost">roost (here)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Platform fee taken</td><td class="no">£150</td><td class="no">£170</td><td class="yes roost-col">£0</td></tr>
+      <tr><td>Payment processor</td><td>Stripe-equivalent built-in</td><td>Stripe-equivalent built-in</td><td class="roost-col">£14 (Stripe direct)</td></tr>
+      <tr><td>Host receives</td><td>£850</td><td>£830</td><td class="yes roost-col">£986</td></tr>
+      <tr><td>Guest data given to platform</td><td class="no">Full profile</td><td class="no">Full profile</td><td class="yes roost-col">None to roost</td></tr>
+      <tr><td>"Risk of delisting" hosts</td><td class="no">Yes · arbitrary</td><td class="no">Yes</td><td class="yes roost-col">Impossible · they own the listing</td></tr>
+      <tr><td>Reviews live on</td><td class="no">Airbnb's database</td><td class="no">Booking's database</td><td class="yes roost-col">Host's own database</td></tr>
+      <tr><td>What happens if platform dies?</td><td class="no">9 years of reviews vanish</td><td class="no">Same</td><td class="yes roost-col">Nothing · protocol still works</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:24px;text-align:center;color:var(--ember);font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic">
+    £136 more per £1,000 booking · in the host's pocket · in your local economy.
+  </p>
+</section>
+
+<!-- LOCATIONS -->
+<section>
+  <div class="section-eyebrow">Browse by location</div>
+  <h2 class="section-h2">Where roost <em>is</em>.</h2>
+  <p class="section-lead">Founding hosts span 3 countries · 11 regions · more joining weekly.</p>
+  <div class="locations" id="locations"></div>
+</section>
+
+<!-- FOR HOSTS -->
+<div class="hosts">
+  <div class="hosts-inner">
+    <div style="text-align:center;max-width:780px;margin:0 auto">
+      <div class="section-eyebrow" style="color:var(--ember)">For hosts</div>
+      <h2 class="section-h2">Keep your guests. <em>Keep your money.</em><br>Keep your data.</h2>
+      <p style="font-size:16px;color:var(--text);max-width:580px;margin:0 auto 30px;line-height:1.7">
+        If you run a small accommodation business and you're tired of paying 15-17% per booking to a platform that owns your reviews and your guests — join the co-op.
+      </p>
+    </div>
+
+    <div class="hosts-grid">
+      <div class="coop-card">
+        <h3>roost co-op membership</h3>
+        <div class="coop-price">£20<small>/month · flat · no commission</small></div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:10px">Or £200/year — saves £40.</p>
+        <ul class="coop-list">
+          <li>Listed in the roost marketplace</li>
+          <li>Stays-protocol publishing tools</li>
+          <li>iCal auto-sync from any channel</li>
+          <li>Optional Wishwood Engine bundle (£99 setup)</li>
+          <li>Cooperative voting rights · 1 host = 1 vote</li>
+          <li>Featured rotation across the homepage</li>
+          <li>Cross-host referrals from other members</li>
+          <li class="dim">Per-booking fees</li>
+          <li class="dim">Guest data given to platform</li>
+          <li class="dim">Algorithm pressure or "Genius" demotions</li>
+        </ul>
+        <a href="host.html#join" class="btn primary" style="display:block;text-align:center;margin-top:18px">Join the co-op →</a>
+      </div>
+      <div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--linen);margin-bottom:14px;font-weight:400">The whole point.</h3>
+        <p style="color:var(--text);font-size:15px;line-height:1.8;margin-bottom:16px">
+          We're not building another platform that grows by extracting value from hosts. We're building a cooperative front-door that hosts <em>own</em>.
+        </p>
+        <p style="color:var(--text);font-size:15px;line-height:1.8;margin-bottom:16px">
+          Membership covers Cloudflare hosting, domain renewal, and a tiny stipend to one part-time coordinator. Everything beyond that goes back into features the members vote on.
+        </p>
+        <p style="color:var(--text);font-size:15px;line-height:1.8">
+          The first 100 members get founding-host status and lifetime fee-locked-at-£20 even if pricing changes. We need to find the first 100.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROTOCOL TEASE -->
+<section class="protocol-section">
+  <div class="section-eyebrow">Open protocol</div>
+  <h2 class="section-h2"><em>stays-protocol v1</em> · publish once, syndicate everywhere.</h2>
+  <p class="section-lead">Drop a stays.json file at the root of your site. roost discovers it, indexes it, sends you the guests. Any other aggregator can do the same. No lock-in possible.</p>
+
+  <div class="code-block">
+<span class="c">// at https://your-domain.com/stays.json</span>
+{
+  <span class="k">"protocol"</span>: <span class="v">"stays-protocol/1.0"</span>,
+  <span class="k">"host"</span>: {
+    <span class="k">"name"</span>: <span class="s">"Wishwood Glamping &amp; Forestry"</span>,
+    <span class="k">"location"</span>: <span class="s">"Canterbury, Kent"</span>,
+    <span class="k">"domain"</span>: <span class="s">"https://wishwood.co.uk"</span>
+  },
+  <span class="k">"stays"</span>: [
+    {
+      <span class="k">"name"</span>: <span class="s">"The Hobbit Hut"</span>,
+      <span class="k">"sleeps"</span>: <span class="v">3</span>,
+      <span class="k">"price_from"</span>: <span class="v">95</span>,
+      <span class="k">"ical_url"</span>: <span class="s">"https://wishwood-engine.workers.dev/ical/hobbit"</span>,
+      <span class="k">"book_url"</span>: <span class="s">"https://wishwood.co.uk/book/hobbit"</span>
+    }
+  ]
+}
+  </div>
+
+  <p style="text-align:center;margin-top:24px">
+    <a href="protocol.html" class="btn secondary">Read the full spec →</a>
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">◊ roost</div>
+      <p class="footer-blurb">A cooperative marketplace owned by the hosts who list on it. Built on open stays-protocol. Zero fees per booking · ever. Estate-native sovereign tooling.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Discover</h4>
+      <a href="#browse">Browse stays</a>
+      <a href="#manifesto">Why roost</a>
+      <a href="#">Map view</a>
+      <a href="#">By region</a>
+    </div>
+    <div class="footer-col">
+      <h4>For hosts</h4>
+      <a href="host.html">List a stay</a>
+      <a href="host.html#join">Join the co-op</a>
+      <a href="protocol.html">stays-protocol</a>
+      <a href="data/registry.json">Public registry</a>
+    </div>
+    <div class="footer-col">
+      <h4>Built by</h4>
+      <a href="https://www.ai-nativesolutions.com" target="_blank">AI Native Solutions</a>
+      <a href="https://github.com/sjgant80-hub/roost" target="_blank">GitHub</a>
+      <a href="mailto:ainativesolutions@gmail.com">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>◊ · κ = 1 · sovereign · MIT · powered by Konomi</span>
+    <span>stays-protocol v1.0 · public domain</span>
+  </div>
+</footer>
+
+<script>
+let REG = null;
+async function load(){
+  const res = await fetch('data/registry.json');
+  REG = await res.json();
+  renderStats();
+  renderStays('all');
+  renderLocations();
+  bindFilters();
+  bindSearch();
+}
+
+function renderStats(){
+  document.getElementById('stat-stays').textContent = REG.stats.stays;
+  document.getElementById('stat-hosts').textContent = REG.stats.members;
+  document.getElementById('stat-countries').textContent = REG.stats.countries;
+  document.getElementById('stat-rating').textContent = REG.stats.avg_review.toFixed(2)+'★';
+  document.getElementById('stat-saved').textContent = '£'+REG.stats.saved_in_fees_year_to_date.toLocaleString('en-GB');
+}
+
+function glyphFor(m){
+  if(m.values?.includes('off-grid')) return '⌬';
+  if(m.values?.includes('romantic')||m.values?.includes('adults-only')) return '◊';
+  if(m.values?.includes('water-access')||m.values?.includes('coast')) return '≈';
+  if(m.values?.includes('walkers')||m.values?.includes('working-farm')) return '◬';
+  if(m.values?.includes('stargazing')) return '✧';
+  if(m.values?.includes('design')) return '⬢';
+  return '◐';
+}
+
+function renderStays(filter, query=''){
+  const grid = document.getElementById('stay-grid');
+  const q = query.toLowerCase().trim();
+  const filtered = REG.members.filter(m => {
+    if (q && !`${m.name} ${m.location} ${m.tagline} ${m.values?.join(' ')}`.toLowerCase().includes(q)) return false;
+    if (filter === 'all') return true;
+    if (filter === 'featured') return m.featured;
+    return m.values?.includes(filter);
+  });
+  document.getElementById('filter-result').textContent = `${filtered.length} ${filtered.length===1?'host':'hosts'}`;
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-family:\'Cormorant Garamond\',serif;font-size:22px;font-style:italic">No stays match — try a different filter.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(m => `
+    <div class="stay-card ${m.featured?'featured':''}">
+      <div class="stay-img">
+        <span class="glyph">${glyphFor(m)}</span>
+        ${m.featured?'<span class="badge-featured">Featured</span>':''}
+        ${m.verified?'<span class="badge-verified">✓ Verified</span>':''}
+      </div>
+      <div class="stay-body">
+        <div class="stay-name">${m.name}</div>
+        <div class="stay-loc">${m.location}</div>
+        <div class="stay-tagline">${m.tagline}</div>
+        <div class="stay-tags">
+          ${(m.values||[]).slice(0,4).map(v => `<span class="stay-tag">${v}</span>`).join('')}
+          ${m.stays_count>1?`<span class="stay-tag">${m.stays_count} stays</span>`:''}
+        </div>
+        <div class="stay-meta">
+          <span class="stay-price">£${m.price_from}<small>/ night from</small></span>
+          <span class="stay-stars">${m.review_score?.toFixed(2)}★ <span class="grey">· ${m.review_count.toLocaleString()}</span></span>
+        </div>
+        <a href="${m.domain}" target="_blank" rel="noopener" class="stay-cta">Book direct on ${(m.domain.replace(/https?:\/\//,'').split('/')[0]).split('.').slice(-2,-1)[0]||m.id} →</a>
+        <div class="stay-direct-note">↗ goes direct to host · roost takes £0</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderLocations(){
+  const byLocation = {};
+  REG.members.forEach(m => {
+    const region = m.location.split('·')[0].split(',')[0].trim();
+    byLocation[region] = (byLocation[region]||0) + 1;
+  });
+  document.getElementById('locations').innerHTML = Object.entries(byLocation)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([loc, n]) => `<div class="location-pill" onclick="filterByLocation('${loc}')"><span class="ln">${loc}</span><span class="lc">${n} ${n===1?'host':'hosts'}</span></div>`)
+    .join('');
+}
+function filterByLocation(loc){
+  document.getElementById('search').value = loc;
+  renderStays('all', loc);
+  document.getElementById('browse').scrollIntoView({behavior:'smooth'});
+}
+
+function bindFilters(){
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    c.onclick = () => {
+      document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      renderStays(c.dataset.filter, document.getElementById('search').value);
+    };
+  });
+}
+function bindSearch(){
+  document.getElementById('search').addEventListener('input', e => {
+    const active = document.querySelector('.filter-chip.active');
+    renderStays(active?.dataset.filter || 'all', e.target.value);
+  });
+}
+
+load();
+</script>
+</body>
+</html>

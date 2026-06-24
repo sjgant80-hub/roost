@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>For hosts · join roost · keep your guests, keep your money</title>
+<meta name="description" content="Join the roost cooperative. £20/mo flat, no commission per booking. List your stays once, syndicate everywhere via the open stays-protocol.">
+<link rel="stylesheet" href="data:text/css,">
+<style>
+:root{
+  --void:#18171a;--deep:#1f1e22;--surface:#27262b;--raised:#302f35;
+  --moss:#2d4a3e;--moss-bright:#3d6a55;--leaf:#6b9d6f;
+  --ember:#c97a3d;--ember-glow:rgba(201,122,61,0.12);
+  --gold:#c9a84c;--linen:#ebe5d6;--text:#d4cfc8;--muted:#7a7681;
+  --border:rgba(235,229,214,0.08);--border-strong:rgba(235,229,214,0.18);--bad:#c75a4a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--void);color:var(--text);font-family:-apple-system,system-ui,sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--ember);text-decoration:none}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(24,23,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--linen);letter-spacing:0.02em}
+.brand .glyph{color:var(--ember);font-size:28px}
+.nav{display:flex;gap:22px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase}
+.nav a{color:var(--muted)}.nav a:hover{color:var(--ember)}
+.nav .cta{background:var(--ember);color:var(--void);padding:7px 14px;border-radius:4px;font-weight:700}
+section{padding:64px 28px;max-width:980px;margin:0 auto}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ember);margin-bottom:14px}
+h1{font-family:'Cormorant Garamond',serif;font-size:60px;line-height:1.05;color:var(--linen);margin-bottom:18px;font-weight:400}
+h1 em{color:var(--ember);font-style:italic}
+.lead{font-size:18px;color:var(--text);line-height:1.7;margin-bottom:22px}
+.section-h2{font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--linen);margin-bottom:14px;font-weight:400}
+.section-h2 em{color:var(--ember);font-style:italic}
+.section-lead{font-size:15px;color:var(--muted);max-width:600px;margin-bottom:30px;line-height:1.7}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+@media (max-width:780px){.steps{grid-template-columns:1fr}}
+.step{background:var(--deep);border:1px solid var(--border);border-radius:6px;padding:24px 26px}
+.step .num{font-family:'Cormorant Garamond',serif;font-size:44px;color:var(--ember);line-height:1;margin-bottom:10px;font-weight:500}
+.step h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--linen);margin-bottom:8px}
+.step p{font-size:13px;color:var(--text);line-height:1.7}
+.coop-card{background:linear-gradient(135deg,var(--ember-glow) 0%,var(--deep) 100%);border:1px solid var(--ember);border-radius:8px;padding:40px 44px;margin:40px 0;text-align:center}
+.coop-price{font-family:'Cormorant Garamond',serif;font-size:62px;color:var(--ember);margin:18px 0;font-weight:500}
+.coop-price small{font-size:18px;color:var(--muted);margin-left:8px}
+.coop-list{list-style:none;padding:0;font-size:14px;line-height:2;color:var(--text);margin:18px auto;max-width:480px;text-align:left}
+.coop-list li:before{content:"✓ ";color:var(--leaf);margin-right:6px}
+.btn{padding:14px 28px;border:0;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.primary{background:var(--ember);color:var(--void)}
+.btn.primary:hover{background:#d68850}
+.btn.secondary{background:transparent;color:var(--linen);border:1px solid var(--border-strong)}
+.faq details{border-bottom:1px solid var(--border);padding:20px 0}
+.faq summary{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--linen);cursor:pointer;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq p{margin-top:12px;color:var(--text);line-height:1.7}
+.form{background:var(--deep);border:1px solid var(--border);border-radius:6px;padding:30px;margin-top:30px}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input,.field textarea,.field select{width:100%;background:var(--surface);border:1px solid var(--border);padding:10px 12px;border-radius:4px;color:var(--text);font-family:inherit;font-size:14px}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--ember)}
+footer{background:var(--deep);border-top:1px solid var(--border);padding:40px 28px 30px;text-align:center;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase}
+footer a{color:var(--ember)}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand"><span class="glyph">◊</span><span>roost</span></div>
+  <nav class="nav">
+    <a href="index.html">Browse</a>
+    <a href="index.html#manifesto">Why</a>
+    <a href="protocol.html">Protocol</a>
+    <a href="#join" class="cta">Join the co-op</a>
+  </nav>
+</header>
+
+<section>
+  <div class="eyebrow">For hosts · the offer</div>
+  <h1>Keep your guests. <em>Keep your money.</em> Keep your data.</h1>
+  <p class="lead">
+    If you run a small accommodation business — cabins, cottages, yurts, B&B, treehouses, anything physical and bookable — and you're tired of paying 15-17% per booking forever, this is for you.
+  </p>
+  <p class="lead">
+    roost is a cooperative marketplace. Members pay a flat £20/month. Zero per-booking commission. Bookings go direct to your site, paid into your Stripe. We never see the transaction.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <h3>Publish your stays</h3>
+      <p>Put a stays.json file at the root of your domain (or let us host it for you). One file, all your units.</p>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <h3>Join the co-op</h3>
+      <p>£20/mo or £200/yr. Cancel anytime. Your stays appear in the roost marketplace within an hour.</p>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <h3>Take direct bookings</h3>
+      <p>Guests click through to YOUR site. Your Stripe. Your relationship. Your data. roost takes nothing more.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="coop-card">
+    <div class="eyebrow">Founding-member pricing</div>
+    <h2 class="section-h2" style="text-align:center;margin-bottom:0">The roost <em>co-op</em></h2>
+    <div class="coop-price">£20<small>/month flat · or £200/year</small></div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:14px">First 100 hosts get founding-member status · lifetime fee lock at £20 even if pricing changes.</p>
+    <ul class="coop-list">
+      <li>Listed in roost · across all filters + search</li>
+      <li>Optional Wishwood Engine bundle (£99 one-time setup) — unified inbox, calendar sync, direct booking site</li>
+      <li>Cooperative voting rights · 1 host = 1 vote · on all rules + features + money</li>
+      <li>Featured rotation across the homepage</li>
+      <li>Cross-host referrals (other members can recommend you)</li>
+      <li>Quarterly co-op meet-up (online · in-person where geography clusters)</li>
+      <li>Stays-protocol publishing tools + iCal validation + photo CDN</li>
+      <li>Full data export anytime · take everything with you · no lock-in</li>
+    </ul>
+    <a href="#join" class="btn primary">Join the co-op →</a>
+    <p style="margin-top:20px;color:var(--muted);font-size:12px">No commission · ever · in any form · in any direction.</p>
+  </div>
+</section>
+
+<section id="join">
+  <div class="eyebrow">Apply to join</div>
+  <h2 class="section-h2">Tell us about your <em>place</em>.</h2>
+  <p class="section-lead">We're hand-picking the first 100 hosts to keep the founding crowd aligned. We're looking for sovereign-minded operators with at least one bookable unit and a year of live hosting under their belt.</p>
+
+  <div class="form">
+    <div class="field"><label>Your name</label><input type="text" placeholder="First last"></div>
+    <div class="field"><label>Property name</label><input type="text" placeholder="e.g. Wishwood Glamping"></div>
+    <div class="field"><label>Domain</label><input type="text" placeholder="https://yoursite.co.uk"></div>
+    <div class="field"><label>Location · region · country</label><input type="text" placeholder="Canterbury, Kent · England"></div>
+    <div class="field"><label>Number of stays</label><input type="number" min="1" placeholder="3"></div>
+    <div class="field"><label>Channels you currently list on</label><input type="text" placeholder="Airbnb, Booking.com, Pitchup, FB"></div>
+    <div class="field"><label>Years hosting</label><input type="number" min="0" placeholder="9"></div>
+    <div class="field"><label>What makes your place sovereign-aligned? (1-2 sentences)</label><textarea rows="3" placeholder="We've been off-grid for nine years, hate the platform pressure to discount, and want our guests to actually know who we are."></textarea></div>
+    <div class="field"><label>Email</label><input type="email" placeholder="you@yourdomain.com"></div>
+    <button class="btn primary" style="width:100%;padding:14px;margin-top:8px">Submit application →</button>
+    <p style="text-align:center;margin-top:14px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em">Reviewed within 7 days · no card required to apply</p>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="eyebrow">Common questions</div>
+  <h2 class="section-h2">Before you join.</h2>
+
+  <details>
+    <summary>Do I have to leave Airbnb / Booking.com?</summary>
+    <p>No. Most members keep their existing channels and use roost as their primary direct-booking front-door. Over time, as direct bookings grow, many drop the OTAs entirely. Your choice, your pace.</p>
+  </details>
+  <details>
+    <summary>What happens if I cancel?</summary>
+    <p>You stop paying £20/mo, your listing disappears from roost, your stays.json keeps working (it's your file on your domain), your bookings already received continue normally. No lock-in.</p>
+  </details>
+  <details>
+    <summary>Why is it a co-op and not a normal company?</summary>
+    <p>Because a normal company eventually has to extract value from members to satisfy investors. A co-op grows by serving members better. We've watched too many "host-friendly" platforms turn against hosts the moment they had to grow revenue. Co-op structure makes that impossible.</p>
+  </details>
+  <details>
+    <summary>How do you make money if there's no commission?</summary>
+    <p>We don't try to. The £20/mo from members covers hosting, domain, a part-time coordinator, and modest infrastructure. If roost ever has a surplus, members vote on what to do with it (lower fees, more features, host grants). No exit, no acquisition, no IPO.</p>
+  </details>
+  <details>
+    <summary>What's the Wishwood Engine bundle?</summary>
+    <p>It's a full operator hub built by AI Native Solutions (the same folks behind roost) — unified inbox across all your channels, AI-drafted replies in your voice, calendar sync, direct booking site, guest journey automation, off-grid ops dashboard. Free-standing product worth £499; co-op members get it for £99 one-time setup.</p>
+  </details>
+  <details>
+    <summary>Who runs roost?</summary>
+    <p>Currently a working group of 3 founding hosts plus AI Native Solutions handling the tech. Once we hit 50 members, governance moves to a hosts-elected council. At 100 members, that council can fire the tech provider if they want (we'd hand over the keys).</p>
+  </details>
+  <details>
+    <summary>What if I'm not in the UK or Ireland?</summary>
+    <p>Add yourself to the waitlist. We're starting UK/Ireland because that's where the founding hosts are, but stays-protocol is geography-agnostic. Once we have 25+ hosts asking for a region, we open it.</p>
+  </details>
+</section>
+
+<footer>
+  <div>◊ roost · stays as a commons · <a href="index.html">browse stays</a> · <a href="protocol.html">protocol</a> · <a href="https://github.com/sjgant80-hub/roost">github</a></div>
+  <div style="margin-top:14px">◊ · κ = 1 · sovereign · MIT · powered by Konomi</div>
+</footer>
+
+</body>
+</html>

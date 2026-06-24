@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>stays-protocol v1 · open spec for sovereign accommodation listings</title>
+<style>
+:root{--void:#18171a;--deep:#1f1e22;--surface:#27262b;--moss:#2d4a3e;--leaf:#6b9d6f;--ember:#c97a3d;--ember-glow:rgba(201,122,61,0.12);--gold:#c9a84c;--linen:#ebe5d6;--text:#d4cfc8;--muted:#7a7681;--border:rgba(235,229,214,0.08);--border-strong:rgba(235,229,214,0.18)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--void);color:var(--text);font-family:-apple-system,system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--ember);text-decoration:none}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(24,23,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--linen)}
+.brand .glyph{color:var(--ember);font-size:28px}
+.nav{display:flex;gap:22px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase}
+.nav a{color:var(--muted)}.nav a:hover{color:var(--ember)}
+section{padding:54px 28px;max-width:880px;margin:0 auto}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ember);margin-bottom:14px}
+h1{font-family:'Cormorant Garamond',serif;font-size:54px;line-height:1.1;color:var(--linen);margin-bottom:16px;font-weight:400}
+h1 em{color:var(--ember);font-style:italic}
+h2{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--linen);margin:36px 0 12px;font-weight:400}
+h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--linen);margin:24px 0 10px;font-weight:400}
+p{margin-bottom:14px}
+ul,ol{padding-left:24px;margin-bottom:14px}
+li{margin-bottom:6px}
+code{background:var(--surface);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold)}
+pre{background:var(--deep);border:1px solid var(--border);border-radius:6px;padding:22px 26px;margin:18px 0;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:var(--text)}
+pre .k{color:var(--ember)}
+pre .v{color:var(--leaf)}
+pre .s{color:var(--gold)}
+pre .c{color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--deep);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+th,td{padding:12px 16px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;background:var(--surface);color:var(--ember)}
+td:first-child{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:12px}
+.box{background:var(--deep);border:1px solid var(--ember);border-radius:6px;padding:22px 26px;margin:24px 0}
+.box-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ember);margin-bottom:10px}
+.btn{padding:12px 24px;border:0;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;background:var(--ember);color:var(--void);margin-right:8px}
+.btn.secondary{background:transparent;color:var(--linen);border:1px solid var(--border-strong)}
+footer{background:var(--deep);border-top:1px solid var(--border);padding:40px 28px;text-align:center;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase}
+footer a{color:var(--ember)}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand"><span class="glyph">◊</span><span>roost</span></div>
+  <nav class="nav">
+    <a href="index.html">Browse</a>
+    <a href="host.html">For hosts</a>
+    <a href="protocol.html" style="color:var(--ember)">Protocol</a>
+  </nav>
+</header>
+
+<section>
+  <div class="eyebrow">stays-protocol · version 1.0 · 24 June 2026 · public domain</div>
+  <h1>An <em>open standard</em> for publishing bookable stays.</h1>
+  <p>stays-protocol is a tiny, self-explanatory JSON format you put at <code>/stays.json</code> on your own domain. Any aggregator — roost or anyone else — can discover, parse, and link guests to your direct booking page. No platform owns it. No fees attach. The protocol is public domain under CC0.</p>
+
+  <div style="margin-top:24px">
+    <a href="protocol/stays-protocol-v1.json" class="btn">Download JSON Schema →</a>
+    <a href="index.html" class="btn secondary">See it in use →</a>
+  </div>
+
+  <h2>Design principles</h2>
+  <ol>
+    <li><b>One file, one domain.</b> A host publishes one stays.json at the root of their site. That's the whole listing.</li>
+    <li><b>The host's domain is the source of truth.</b> Not roost. Not Airbnb. Not anyone else. The aggregators are caches; the host is canonical.</li>
+    <li><b>Bookings go direct.</b> Every stay has a <code>book_url</code> that points to the host's site. Aggregators link out. No checkout flows through any third party.</li>
+    <li><b>Availability is open via iCal.</b> Each stay optionally exposes an <code>ical_url</code> the aggregator can read. The host controls what's bookable.</li>
+    <li><b>No protocol-mandated fees.</b> Aggregators must not charge per-booking commission to use stays-protocol data. (If they do, the spec recommends excluding them from federation discovery.)</li>
+    <li><b>Forward-compatible.</b> Unknown fields are preserved by conformant parsers. Aggregators don't break when a host adds a new field.</li>
+  </ol>
+
+  <h2>Discovery</h2>
+  <p>An aggregator MAY find a host's manifest by trying, in order:</p>
+  <ol>
+    <li><code>https://host.tld/stays.json</code></li>
+    <li><code>https://host.tld/.well-known/stays</code></li>
+    <li>An HTML <code>&lt;link rel="alternate" type="application/json" href="..."&gt;</code> in the host's homepage</li>
+    <li>A DNS TXT record at <code>_stays.host.tld</code> pointing to a manifest URL</li>
+  </ol>
+  <p>Aggregators SHOULD respect <code>Cache-Control</code> headers. Hosts SHOULD update at most every 5 minutes for sanity.</p>
+
+  <h2>Manifest schema</h2>
+  <p>Top-level object has 3 required keys: <code>protocol</code>, <code>host</code>, <code>stays</code>.</p>
+
+  <h3>host (object)</h3>
+  <table>
+    <thead><tr><th>field</th><th>type</th><th>required</th><th>description</th></tr></thead>
+    <tbody>
+      <tr><td>id</td><td>string</td><td>✓</td><td>Stable identifier · slug or reverse-DNS</td></tr>
+      <tr><td>name</td><td>string</td><td>✓</td><td>Display name</td></tr>
+      <tr><td>domain</td><td>uri</td><td>✓</td><td>Host's primary domain</td></tr>
+      <tr><td>location</td><td>string</td><td></td><td>City, region, country</td></tr>
+      <tr><td>lat, lng</td><td>number</td><td></td><td>Decimal degrees</td></tr>
+      <tr><td>owner</td><td>string</td><td></td><td>Operator name(s)</td></tr>
+      <tr><td>email, phone</td><td>string</td><td></td><td>Contact</td></tr>
+      <tr><td>bio</td><td>string</td><td></td><td>1-2 paragraph intro</td></tr>
+      <tr><td>founded</td><td>date</td><td></td><td>ISO date</td></tr>
+      <tr><td>values</td><td>array&lt;string&gt;</td><td></td><td>Tags · off-grid, dog-friendly, etc</td></tr>
+      <tr><td>channels</td><td>array&lt;string&gt;</td><td></td><td>Other platforms host lists on (for transparency)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>stays (array of objects)</h3>
+  <table>
+    <thead><tr><th>field</th><th>type</th><th>required</th><th>description</th></tr></thead>
+    <tbody>
+      <tr><td>id</td><td>string</td><td>✓</td><td>Unique within host</td></tr>
+      <tr><td>name</td><td>string</td><td>✓</td><td>Stay name</td></tr>
+      <tr><td>type</td><td>string</td><td></td><td>cabin · cottage · yurt · hut · caravan · room · bell-tent etc</td></tr>
+      <tr><td>sleeps</td><td>integer</td><td>✓</td><td>Max guests</td></tr>
+      <tr><td>beds</td><td>string</td><td></td><td>"1 double · 2 twin"</td></tr>
+      <tr><td>price_from</td><td>number</td><td>✓</td><td>Lowest nightly rate</td></tr>
+      <tr><td>price_currency</td><td>string</td><td></td><td>ISO 4217 · default GBP</td></tr>
+      <tr><td>min_nights</td><td>integer</td><td></td><td>Default 1</td></tr>
+      <tr><td>description</td><td>string</td><td></td><td></td></tr>
+      <tr><td>amenities</td><td>array&lt;string&gt;</td><td></td><td></td></tr>
+      <tr><td>dogs, kids, off_grid, wifi</td><td>boolean</td><td></td><td>Hard filters</td></tr>
+      <tr><td>ical_url</td><td>uri</td><td></td><td>Public iCal export for availability</td></tr>
+      <tr><td>photos</td><td>array&lt;uri&gt;</td><td></td><td>Photo URLs</td></tr>
+      <tr><td>book_url</td><td>uri</td><td>✓</td><td>Direct booking URL on host's site</td></tr>
+      <tr><td>tags</td><td>array&lt;string&gt;</td><td></td><td>Free tags</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Minimal example</h2>
+  <pre>{
+  <span class="k">"protocol"</span>: <span class="s">"stays-protocol/1.0"</span>,
+  <span class="k">"host"</span>: {
+    <span class="k">"id"</span>: <span class="s">"wishwood"</span>,
+    <span class="k">"name"</span>: <span class="s">"Wishwood Glamping &amp; Forestry"</span>,
+    <span class="k">"domain"</span>: <span class="s">"https://wishwood.co.uk"</span>,
+    <span class="k">"location"</span>: <span class="s">"Canterbury, Kent · England"</span>
+  },
+  <span class="k">"stays"</span>: [
+    {
+      <span class="k">"id"</span>: <span class="s">"hobbit"</span>,
+      <span class="k">"name"</span>: <span class="s">"The Hobbit Hut"</span>,
+      <span class="k">"type"</span>: <span class="s">"hut"</span>,
+      <span class="k">"sleeps"</span>: <span class="v">3</span>,
+      <span class="k">"price_from"</span>: <span class="v">95</span>,
+      <span class="k">"off_grid"</span>: <span class="v">true</span>,
+      <span class="k">"dogs"</span>: <span class="v">true</span>,
+      <span class="k">"ical_url"</span>: <span class="s">"https://wishwood-engine.workers.dev/ical/hobbit"</span>,
+      <span class="k">"book_url"</span>: <span class="s">"https://wishwood.co.uk/book/hobbit"</span>
+    }
+  ]
+}</pre>
+
+  <h2>Verifiable provenance (optional)</h2>
+  <p>A host MAY sign the manifest hash with an Ed25519 key and publish the public key at <code>/.well-known/stays-key</code>. Aggregators that verify signatures display a "verified" badge. Useful when listings get scraped and misrepresented elsewhere.</p>
+
+  <h2>Versioning</h2>
+  <p>This is <b>stays-protocol/1.0</b>. The <code>protocol</code> field at the manifest root declares conformance. Aggregators that find an unknown version MUST refuse to syndicate (graceful fail, not silent misinterpretation).</p>
+
+  <h2>License</h2>
+  <p>The protocol is released under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a>. Use it, fork it, embed it. No attribution required (though always nice).</p>
+
+  <div class="box">
+    <div class="box-label">◊ design intent</div>
+    <p>stays-protocol exists to make platforms unnecessary. If even three aggregators federate over the same protocol, no single one can extract monopoly rent. Hosts move freely between aggregators by changing nothing — the source of truth is always the host's own domain.</p>
+  </div>
+</section>
+
+<footer>
+  <div>◊ stays-protocol v1.0 · CC0 public domain · part of the <a href="index.html">roost</a> ecosystem · <a href="https://github.com/sjgant80-hub/roost">github</a></div>
+  <div style="margin-top:14px">◊ · κ = 1 · sovereign · powered by Konomi</div>
+</footer>
+
+</body>
+</html>

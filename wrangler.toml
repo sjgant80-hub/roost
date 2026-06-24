@@ -1,0 +1,10 @@
+name = "roost-aggregator"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+
+[[kv_namespaces]]
+binding = "ROOST_KV"
+id = "TBD-replace-after-first-deploy"
+
+[triggers]
+crons = ["0 * * * *"]   # hourly host manifest refresh
