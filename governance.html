@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Roost · governance · how a user-owned, AI-operated platform actually works</title>
+<meta name="description" content="Roost is owned by its host members and operated by AI agents under member oversight. This page documents how voting works, where the money flows, how the AI is controlled, and the transition from founder-built to member-run.">
+<meta name="theme-color" content="#18171a">
+<style>
+:root{--void:#18171a;--deep:#1f1e22;--surface:#27262b;--raised:#302f35;--moss:#2d4a3e;--moss-bright:#3d6a55;--leaf:#6b9d6f;--ember:#c97a3d;--ember-glow:rgba(201,122,61,0.12);--gold:#c9a84c;--linen:#ebe5d6;--text:#d4cfc8;--muted:#7a7681;--border:rgba(235,229,214,0.08);--border-strong:rgba(235,229,214,0.18);--bad:#c75a4a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--void);color:var(--text);font-family:-apple-system,system-ui,sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--ember);text-decoration:none}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(24,23,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--linen)}
+.brand .glyph{color:var(--ember);font-size:28px}
+.nav{display:flex;gap:22px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;flex-wrap:wrap}
+.nav a{color:var(--muted)}.nav a:hover{color:var(--ember)}
+
+.hero{padding:70px 28px 50px;background:radial-gradient(ellipse at top,var(--moss) 0%,var(--void) 70%);text-align:center;border-bottom:1px solid var(--border)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ember);margin-bottom:14px}
+h1{font-family:'Cormorant Garamond',serif;font-size:54px;line-height:1.1;color:var(--linen);margin:0 auto 16px;font-weight:400;max-width:820px}
+h1 em{color:var(--ember);font-style:italic}
+.hero-sub{font-size:18px;color:var(--text);max-width:600px;margin:0 auto;line-height:1.7}
+
+section{padding:60px 28px;max-width:880px;margin:0 auto}
+.h2{font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--linen);margin-bottom:14px;font-weight:400;line-height:1.2}
+.h2 em{color:var(--ember);font-style:italic}
+.h2 .num{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--ember);background:var(--ember-glow);width:32px;height:32px;border-radius:50%;text-align:center;line-height:32px;margin-right:10px;vertical-align:middle;border:1px solid var(--ember)}
+.lead{font-size:17px;color:var(--text);line-height:1.8;margin-bottom:18px}
+p{margin-bottom:14px}
+strong{color:var(--linen)}
+em.gold{color:var(--gold);font-style:normal}
+ul,ol{padding-left:24px;margin:14px 0}
+li{margin-bottom:8px}
+
+.banner-future{
+  background:linear-gradient(135deg,var(--moss) 0%,var(--deep) 100%);
+  border:1px solid var(--moss-bright);
+  border-radius:8px;padding:30px 36px;margin-bottom:36px;
+}
+.banner-future .label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--leaf);margin-bottom:12px}
+.banner-future .quote{font-family:'Cormorant Garamond',serif;font-size:26px;line-height:1.5;color:var(--linen);font-style:italic}
+.banner-future .quote em{color:var(--ember)}
+
+.timeline{margin:30px 0;border-left:2px solid var(--border-strong);padding-left:24px}
+.timeline-step{margin-bottom:30px;position:relative}
+.timeline-step:before{content:"";position:absolute;left:-30px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--border-strong)}
+.timeline-step.now:before{background:var(--ember);border-color:var(--ember);box-shadow:0 0 0 4px var(--ember-glow)}
+.timeline-step.done:before{background:var(--leaf);border-color:var(--leaf)}
+.timeline-step.future:before{background:var(--surface);border-color:var(--muted)}
+.timeline-step h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--linen);margin-bottom:6px;font-weight:400}
+.timeline-step .when{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ember);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px}
+.timeline-step.done .when{color:var(--leaf)}
+.timeline-step.future .when{color:var(--muted)}
+.timeline-step p{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:0}
+
+.money-table{width:100%;border-collapse:collapse;background:var(--deep);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:24px 0}
+.money-table th,.money-table td{padding:12px 18px;border-bottom:1px solid var(--border);text-align:left;font-size:14px}
+.money-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);background:var(--surface)}
+.money-table td:first-child{color:var(--linen);font-weight:500}
+.money-table td.amount{font-family:'JetBrains Mono',monospace;color:var(--gold);text-align:right}
+.money-table td.cat-in{color:var(--leaf);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase}
+.money-table td.cat-out{color:var(--ember);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase}
+.money-table td.cat-builder{color:var(--bad);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase}
+.money-table tr.total{font-weight:700;background:var(--surface)}
+.money-table tr.total td{color:var(--linen)}
+
+.ai-card{background:var(--deep);border:1px solid var(--border);border-radius:8px;padding:24px 28px;margin:14px 0}
+.ai-card.flow{border-left:4px solid var(--ember)}
+.ai-card h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--linen);margin-bottom:10px;font-weight:400}
+.ai-card .prompt{background:var(--surface);border-left:3px solid var(--ember);padding:10px 14px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--linen);border-radius:0 4px 4px 0}
+.ai-card .response{background:var(--moss);padding:10px 14px;margin:6px 0;font-size:13px;color:var(--linen);border-radius:4px;line-height:1.65}
+.ai-card .response-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--leaf);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:4px}
+
+.rights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:24px 0}
+.right{background:var(--deep);border:1px solid var(--border);border-radius:6px;padding:18px 22px}
+.right .glyph{font-size:24px;color:var(--ember);margin-bottom:8px}
+.right h4{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--linen);margin-bottom:6px;font-weight:400}
+.right p{font-size:13px;color:var(--text);line-height:1.65;margin:0}
+
+.vote-flow{background:var(--deep);border:1px solid var(--border);border-radius:6px;padding:24px 28px;margin:20px 0}
+.vote-flow ol{counter-reset:vote;list-style:none;padding:0}
+.vote-flow li{counter-increment:vote;padding:12px 0 12px 50px;border-bottom:1px solid var(--border);position:relative;font-size:14px}
+.vote-flow li:last-child{border-bottom:0}
+.vote-flow li:before{content:counter(vote);position:absolute;left:0;top:8px;width:34px;height:34px;border-radius:50%;background:var(--ember);color:var(--void);font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.vote-flow li strong{color:var(--linen);display:block;margin-bottom:4px;font-size:15px}
+
+.callout{background:var(--moss);border-left:3px solid var(--leaf);padding:14px 18px;border-radius:0 4px 4px 0;margin:16px 0;font-size:14px;color:var(--linen);line-height:1.65}
+.callout em{color:var(--ember);font-style:italic}
+.callout.warn{background:rgba(199,90,74,0.1);border-left-color:var(--bad)}
+
+.transparency-card{
+  background:linear-gradient(135deg,var(--ember-glow) 0%,var(--deep) 100%);
+  border:1px solid var(--ember);border-radius:8px;
+  padding:28px 32px;margin:30px 0;
+}
+.transparency-card h3{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--linen);margin-bottom:14px;font-weight:400}
+
+footer{background:var(--deep);border-top:1px solid var(--border);padding:40px 28px;text-align:center;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase}
+footer a{color:var(--ember)}
+footer div+div{margin-top:14px}
+
+@media (max-width:780px){
+  h1{font-size:36px}.h2{font-size:28px}section{padding:40px 22px}
+  .banner-future{padding:22px 24px}.banner-future .quote{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand"><span class="glyph">◊</span><span>roost · governance</span></div>
+  <nav class="nav">
+    <a href="index.html">Browse</a>
+    <a href="howitworks.html">How it works</a>
+    <a href="host.html">For hosts</a>
+    <a href="protocol.html">Protocol</a>
+    <a href="governance.html" style="color:var(--ember)">Governance</a>
+  </nav>
+</header>
+
+<section class="hero" style="max-width:none;margin:0">
+  <div class="eyebrow">how a user-owned, AI-operated platform actually works</div>
+  <h1>Owned by the hosts. <em>Operated by AI.</em> Overseen by everyone.</h1>
+  <p class="hero-sub">
+    roost is an example of what comes after platforms. The members own the asset. AI agents run the day-to-day. Members prompt and oversee — they don't have to operate the thing they own. Below: how voting works, where every pound goes, who has the keys, and the timeline from "Simon built it" to "members run it."
+  </p>
+</section>
+
+<section>
+  <div class="banner-future">
+    <div class="label">◊ THE FUTURE MODEL</div>
+    <div class="quote">
+      Platforms had ~20 years of extracting value from the people who built it.<br>
+      The next 20 years: the people <em>own</em> the platform · <em>AI runs it</em> · they oversee it for a few hours a month and get on with their lives.
+    </div>
+  </div>
+</section>
+
+<!-- 1 · WHAT MEMBERSHIP MEANS -->
+<section>
+  <h2 class="h2"><span class="num">1</span> What membership <em>actually</em> means.</h2>
+
+  <p class="lead">When you join roost as a host you become a <strong>co-owner</strong>, not a customer. Concretely, you get the following rights · written down here so they can't quietly disappear later:</p>
+
+  <div class="rights-grid">
+    <div class="right">
+      <div class="glyph">◊</div>
+      <h4>1 host = 1 vote</h4>
+      <p>On every rule, every feature change, every financial decision. Big hosts and tiny hosts have equal say.</p>
+    </div>
+    <div class="right">
+      <div class="glyph">⌬</div>
+      <h4>Open books · forever</h4>
+      <p>Every pound in and out of roost is visible on this page · refreshed monthly. No hidden management fees.</p>
+    </div>
+    <div class="right">
+      <div class="glyph">◬</div>
+      <h4>Veto on AI actions</h4>
+      <p>You can override any AI agent decision affecting your listing within 24 hours · no questions asked.</p>
+    </div>
+    <div class="right">
+      <div class="glyph">≋</div>
+      <h4>Exit · with everything</h4>
+      <p>Leave any time. Your stays.json stays on your domain. Your reviews export to JSON. No lock-in possible.</p>
+    </div>
+    <div class="right">
+      <div class="glyph">✦</div>
+      <h4>Founding-host lock-in</h4>
+      <p>First 100 members: lifetime £20/month even if everyone else's price rises. Permanent founding-member status.</p>
+    </div>
+    <div class="right">
+      <div class="glyph">◆</div>
+      <h4>Right to fork</h4>
+      <p>If you disagree with the direction, you can fork the whole codebase and run a competing aggregator. MIT licensed · CC0 protocol.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · HOW AI RUNS IT -->
+<section>
+  <h2 class="h2"><span class="num">2</span> How <em>AI runs</em> the day-to-day.</h2>
+
+  <p class="lead">The promise is "user-operated" but a co-op where every host has to manually do operations work is just another job. So we built it differently: <strong>AI agents do the operations, members prompt and oversee</strong>.</p>
+
+  <p>You watch. You prompt when something needs deciding. You don't run the platform · the platform runs itself under your watch.</p>
+
+  <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--linen);margin:30px 0 14px;font-weight:400">What this looks like in practice</h3>
+
+  <div class="ai-card flow">
+    <h3>◊ Example 1 · approving a new host application</h3>
+    <div class="response-label">A new host applies via host.html · the application lands in the co-op queue · AI summarises:</div>
+    <div class="response">"<strong>Tideline Shepherd Huts</strong> · 3 units · Pembrokeshire · 4 years hosting · 428 reviews / 4.79★ on Airbnb · cross-checks: domain verified, photos consistent, no fraud signals · estimated fit: 92% (matches off-grid · coastal · dog-friendly criteria)."</div>
+    <div class="response-label">A member prompts:</div>
+    <div class="prompt">▸ approve tideline · welcome them on the founder slack</div>
+    <div class="response-label">AI does:</div>
+    <div class="response">→ Adds tideline to registry · pulls their stays.json · indexes 3 units · sends welcome email · invites to slack · announces in #new-hosts channel · updates monthly stats.</div>
+    <p style="font-size:13px;color:var(--muted);margin-top:12px;margin-bottom:0">Time: ~15 seconds. Member effort: one prompt.</p>
+  </div>
+
+  <div class="ai-card flow">
+    <h3>◊ Example 2 · quarterly financial report</h3>
+    <div class="response-label">AI auto-generates · posts to #governance channel · waits for vote.</div>
+    <div class="response">
+      <strong>Q3 2026 report (auto)</strong><br>
+      ↑ Membership income: £720 (36 members × £20)<br>
+      ↓ Costs: £142 (Cloudflare £14 · domain £3 · Claude API £85 · Stripe fees £40)<br>
+      ↓ Coordinator stipend: £200<br>
+      ⮑ <strong>Surplus: £378</strong> · vote on use:<br>
+      &nbsp;&nbsp;&nbsp;A. Lower membership to £18/mo<br>
+      &nbsp;&nbsp;&nbsp;B. Build mobile app<br>
+      &nbsp;&nbsp;&nbsp;C. Host-grant fund for new entrants<br>
+      &nbsp;&nbsp;&nbsp;D. Save for AI infrastructure upgrade
+    </div>
+    <div class="response-label">Members vote in-app · 7 days · AI tallies · winning option executes automatically.</div>
+  </div>
+
+  <div class="ai-card flow">
+    <h3>◊ Example 3 · suspending a bad-actor host</h3>
+    <div class="response-label">A guest complaint reaches roost · AI flags · pings duty member:</div>
+    <div class="response">"⚠ <strong>Host X</strong> · 3 complaints in 2 weeks about misrepresented listing photos. Pattern detected. Recommended: 48hr suspension pending review. Awaiting member instruction."</div>
+    <div class="response-label">A member prompts:</div>
+    <div class="prompt">▸ suspend host X pending member vote · share evidence to #governance</div>
+    <div class="response-label">AI does:</div>
+    <div class="response">→ Hides listing from public · emails host with evidence + appeal route · posts case to #governance · opens 5-day member vote.</div>
+  </div>
+
+  <div class="callout">
+    <strong>The key insight:</strong> <em>members are overseers, not operators.</em> You spend maybe 2 hours a month reviewing AI summaries and voting on the handful of decisions that need human judgment. The rest runs itself. That's what "user-operated" means when AI is doing the actual operating work.
+  </div>
+</section>
+
+<!-- 3 · VOTING -->
+<section>
+  <h2 class="h2"><span class="num">3</span> How <em>voting</em> works.</h2>
+
+  <p class="lead">Three types of decision. Three different thresholds.</p>
+
+  <div class="vote-flow">
+    <ol>
+      <li>
+        <strong>Routine operations</strong> (new member approval · suspend bad actor · monthly cost overruns)<br>
+        Simple majority of votes cast in 5 days · quorum 30% of members.
+      </li>
+      <li>
+        <strong>Standing rule changes</strong> (membership fee · what's allowed in stays.json · co-op constitution edits)<br>
+        Two-thirds majority of votes cast in 14 days · quorum 50% of members.
+      </li>
+      <li>
+        <strong>Existential decisions</strong> (dissolve roost · merge with another co-op · replace tech provider · change ownership structure)<br>
+        Three-quarters majority of <em>all members</em> in 30 days · no quorum exception.
+      </li>
+    </ol>
+  </div>
+
+  <p>Voting is open and signed: every vote shows who voted what. No secret ballots — full transparency is the deal.</p>
+</section>
+
+<!-- 4 · TIMELINE -->
+<section>
+  <h2 class="h2"><span class="num">4</span> The <em>handover</em> timeline.</h2>
+
+  <p class="lead">Right now (June 2026), roost was built by Simon at AI Native Solutions. Here's exactly how it transitions to fully member-owned + AI-operated:</p>
+
+  <div class="timeline">
+
+    <div class="timeline-step done">
+      <div class="when">June 2026 · DONE</div>
+      <h3>Phase 1 · Simon builds + Wishwood becomes host #001</h3>
+      <p>The codebase exists · the protocol is published · Wishwood Glamping is the first live reference implementation. Aggregator running on Cloudflare free tier.</p>
+    </div>
+
+    <div class="timeline-step now">
+      <div class="when">July-September 2026 · IN PROGRESS</div>
+      <h3>Phase 2 · First 50 founding hosts join</h3>
+      <p>Hand-picked from word-of-mouth, this LinkedIn post, and Wishwood's referral. Each pays £20/mo. Simon (AI Native Solutions) acts as <em>interim tech provider + coordinator</em> · charges <strong>£1,200/quarter</strong> from membership pool (visible in the financial table below). Members vote on everything else.</p>
+    </div>
+
+    <div class="timeline-step future">
+      <div class="when">October 2026 · NEXT</div>
+      <h3>Phase 3 · Council elected at 50 members</h3>
+      <p>5-member governing council elected from membership · 6-month terms · sets operational policy · approves AI agent prompts before they go live · publishes minutes after each meeting (monthly).</p>
+    </div>
+
+    <div class="timeline-step future">
+      <div class="when">Q1 2027 · TARGET</div>
+      <h3>Phase 4 · AI fully operational</h3>
+      <p>The 8-agent ops system (intake · approval · finance · communications · moderation · billing · reporting · audit) reaches full autonomy under member oversight. Simon's role drops to "code maintenance" only.</p>
+    </div>
+
+    <div class="timeline-step future">
+      <div class="when">Q2 2027 · DECIDED BY VOTE</div>
+      <h3>Phase 5 · 100 members · vote to replace tech provider (or not)</h3>
+      <p>At 100 hosts, members can vote (3/4 majority) to fire Simon and bring in any other tech provider · or keep Simon at a renegotiated rate · or run code maintenance via the council directly. Simon hands over all keys + admin access on member request, no resistance, no clawback.</p>
+    </div>
+
+    <div class="timeline-step future">
+      <div class="when">ongoing · forever</div>
+      <h3>Phase 6 · No exit · no acquisition · no sale</h3>
+      <p>Roost is structurally unsellable. There is no equity to buy. There is no founder shareholding. Even Simon cannot sell roost · the council cannot sell roost · the codebase is MIT, the protocol is CC0. The only "exit" possible is dissolution by 3/4 member vote, with assets distributed equally to members on that date.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- 5 · MONEY -->
+<section>
+  <h2 class="h2"><span class="num">5</span> Where the <em>money</em> goes · every pound visible.</h2>
+
+  <p class="lead">This is the live financial picture. Updated monthly. Members get a separate spreadsheet with every transaction itemised.</p>
+
+  <table class="money-table">
+    <thead>
+      <tr><th>Category</th><th>Type</th><th>Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Membership fees · 12 founding members × £20 (June 2026 illustrative)</td><td class="cat-in">↑ in</td><td class="amount">£240/mo</td></tr>
+      <tr><td>Cloudflare Workers + KV (free tier covers us to ~500 members)</td><td class="cat-out">↓ infra</td><td class="amount">£0</td></tr>
+      <tr><td>Domain (roost.land · annualised)</td><td class="cat-out">↓ infra</td><td class="amount">£3/mo</td></tr>
+      <tr><td>Claude API (AI agents at current volume)</td><td class="cat-out">↓ AI</td><td class="amount">£28/mo</td></tr>
+      <tr><td>Stripe membership fees (1.4% + 20p × 12)</td><td class="cat-out">↓ payments</td><td class="amount">£5/mo</td></tr>
+      <tr><td>Coordinator stipend (Simon · interim · until council elected)</td><td class="cat-builder">↓ builder</td><td class="amount">£100/mo</td></tr>
+      <tr><td>Build fee · Simon (one-time · paid over 6 months from membership pool · ends Dec 2026)</td><td class="cat-builder">↓ builder</td><td class="amount">£400/mo</td></tr>
+      <tr><td colspan="2"><strong>Surplus</strong> (voted into features / lower fees / host grants)</td><td class="amount" style="color:var(--leaf)"><strong>−£296/mo</strong> (negative · subsidised from build budget until ~30 members)</td></tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:13px;color:var(--muted);font-style:italic">⚠ The build fee + coordinator stipend make roost loss-making at 12 members. We're subsidising from the launch budget until membership reaches ~30 hosts (Aug 2026 target). At 50 hosts we're profitable; at 100 we generate ~£600/month surplus for the co-op to vote on.</p>
+
+  <div class="transparency-card">
+    <h3>Open-book promise</h3>
+    <p>This is the contract: every transaction roost makes (membership in · costs out · Simon's pay · coordinator stipend · surplus allocation) is visible. We publish a Google Sheet · members can audit · external accountant signs off quarterly. If we ever stop publishing, members can vote to fire the tech provider.</p>
+    <p style="margin-bottom:0"><strong>The £500 build fee + stipend is the only money Simon takes from roost.</strong> No equity. No exit upside. No "founder forever" arrangement. Once the build is paid off (Dec 2026), he's just another vendor.</p>
+  </div>
+</section>
+
+<!-- 6 · WHAT SIMON GETS PAID FOR -->
+<section>
+  <h2 class="h2"><span class="num">6</span> What Simon gets paid for · <em>and what he doesn't</em>.</h2>
+
+  <p class="lead">Full transparency on what AI Native Solutions (Simon Gant) earns from roost:</p>
+
+  <table class="money-table">
+    <thead>
+      <tr><th>Item</th><th>Amount</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Build fee · one-time</td>
+        <td class="amount">£2,400 total · paid over 6 months</td>
+        <td style="font-size:13px;color:var(--text)">For designing + writing all roost code (worker · marketplace · governance UI · stays-protocol · AI ops integration). Equivalent to ~6 days of contract work.</td>
+      </tr>
+      <tr>
+        <td>Coordinator stipend · interim (Jun-Sept 2026)</td>
+        <td class="amount">£100/mo</td>
+        <td style="font-size:13px;color:var(--text)">For handling host vetting, member queries, ops oversight while council not yet elected. Ends when council takes over.</td>
+      </tr>
+      <tr>
+        <td>Ongoing maintenance · post-handover</td>
+        <td class="amount">£0 (or whatever council votes)</td>
+        <td style="font-size:13px;color:var(--text)">After Q2 2027 vote, Simon either continues at a council-negotiated rate, or is replaced. No assumed continuity.</td>
+      </tr>
+      <tr class="total">
+        <td><strong>Total Simon earns from roost · year 1</strong></td>
+        <td class="amount"><strong>£2,800</strong></td>
+        <td style="font-size:13px;color:var(--linen)">For 6 days of build + 4 months of coordination. After that, £0 by default.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--linen);margin:24px 0 10px;font-weight:400">What Simon explicitly does NOT get</h3>
+  <ul>
+    <li><strong>No equity</strong> — there are no shares to issue · roost is structurally a co-op</li>
+    <li><strong>No referral fee per host</strong> — except via Wishwood-style host-to-host referral (10%, open to all members)</li>
+    <li><strong>No exit payout</strong> — there is no exit possible</li>
+    <li><strong>No "founder" pricing privileges</strong> — Simon doesn't host on roost (Wishwood does, and Wishwood gets the standard founding-member £20/mo)</li>
+    <li><strong>No data ownership</strong> — all member data lives in member-controlled Cloudflare accounts the council can transfer at any time</li>
+  </ul>
+
+  <div class="callout">
+    <em>The deal is simple:</em> Simon got paid to build it. After that, it belongs to the members. He's a vendor like any other vendor — if you can replace him with a better/cheaper tech provider, the council vote does that. No friction. No founder drama.
+  </div>
+</section>
+
+<!-- 7 · WHAT THE AI HAS THE KEYS TO -->
+<section>
+  <h2 class="h2"><span class="num">7</span> What the <em>AI has the keys to</em>.</h2>
+
+  <p class="lead">Important: AI agents don't have unlimited authority. They operate within a hard-coded permission boundary that only a 3/4 member vote can change.</p>
+
+  <table class="money-table">
+    <thead>
+      <tr><th>AI can do without asking</th><th>Bounded by</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Index new published stays.json files</td><td>Domain verification + duplicate check</td></tr>
+      <tr><td>Send notification emails to members</td><td>Templates approved by council</td></tr>
+      <tr><td>Generate financial reports</td><td>Read-only access to bank · no transfer authority</td></tr>
+      <tr><td>Draft responses to member queries</td><td>Auto-flag for human review if confidence &lt; 80%</td></tr>
+      <tr><td>Auto-suspend listings flagged for fraud (≥3 valid signals)</td><td>24hr cooling-off · member can override · always opens member vote</td></tr>
+    </tbody>
+  </table>
+
+  <table class="money-table" style="margin-top:18px">
+    <thead>
+      <tr><th>AI cannot do without member prompt + vote</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Approve a new host onto the marketplace</td></tr>
+      <tr><td>Permanently ban a member</td></tr>
+      <tr><td>Move money out of the roost account</td></tr>
+      <tr><td>Change membership pricing</td></tr>
+      <tr><td>Change the constitution / these rules</td></tr>
+      <tr><td>Delete data</td></tr>
+      <tr><td>Sign any external contract</td></tr>
+    </tbody>
+  </table>
+
+  <p>Every AI action is logged in an immutable audit trail. Members can review every decision the AI made in the last quarter and challenge any of them at the council meeting.</p>
+</section>
+
+<!-- 8 · WHY THIS IS THE FUTURE -->
+<section>
+  <h2 class="h2"><span class="num">8</span> Why this is the <em>future model</em>.</h2>
+
+  <p class="lead">Every platform shape that's existed in the last 20 years extracted value from the people who created it. The user-owned + AI-operated structure makes that extraction impossible by design:</p>
+
+  <table class="money-table">
+    <thead>
+      <tr><th>Model</th><th>Owns the asset</th><th>Operates it</th><th>Extractable?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Old SaaS</strong> (Airbnb, Booking, Hostaway)</td><td>VCs / founders</td><td>Founders + 1000s of staff</td><td style="color:var(--bad)">Yes · forever</td></tr>
+      <tr><td><strong>Open source</strong> (Mastodon, Diaspora)</td><td>Instance admins</td><td>Volunteer admins · burnout-prone</td><td style="color:var(--gold)">Limited · but unsustainable</td></tr>
+      <tr><td><strong>Traditional co-op</strong> (Stocksy, Equal Exchange)</td><td>Members</td><td>Paid staff team</td><td style="color:var(--gold)">Limited · but high overhead</td></tr>
+      <tr><td style="color:var(--ember)"><strong>User-owned + AI-operated</strong> (roost)</td><td style="color:var(--ember)">Members · structurally</td><td style="color:var(--ember)">AI agents · with member oversight</td><td style="color:var(--leaf)"><strong>No · by design</strong></td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:24px;font-size:17px;color:var(--linen);font-family:'Cormorant Garamond',serif;font-style:italic;line-height:1.6;text-align:center">
+    AI just turned the per-user cost of platform operations from £8 to £0.08.<br>
+    Member-owned co-ops were always the right answer · they just couldn't afford to run.<br>
+    Now they can.
+  </p>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="transparency-card" style="text-align:center">
+    <div class="eyebrow">if this is the model you want to be part of</div>
+    <h3>Apply to be a founding member.</h3>
+    <p>£20/month flat · lifetime fee lock at £20 even when others' price rises · vote on every decision · AI does the operations · you watch and prompt · structurally impossible to be acquired or extracted from.</p>
+    <p style="margin-top:18px"><a href="host.html#join" style="background:var(--ember);color:var(--void);padding:14px 28px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;text-decoration:none;display:inline-block">Become a co-owner →</a></p>
+  </div>
+</section>
+
+<footer>
+  <div>◊ roost governance · stays as a commons · <a href="index.html">browse</a> · <a href="host.html">join</a> · <a href="protocol.html">protocol</a> · <a href="https://github.com/sjgant80-hub/roost">github</a></div>
+  <div>◊ · κ = 1 · sovereign · MIT · powered by Konomi · post-platform model · the future is co-operative</div>
+</footer>
+
+</body>
+</html>
