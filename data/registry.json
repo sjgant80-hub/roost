@@ -1,9 +1,10 @@
 {
-  "version": 1,
+  "version": 2,
   "updated": "2026-06-24",
   "members": [
     {
       "id": "wishwood",
+      "host_number": "001",
       "name": "Wishwood Glamping & Forestry",
       "domain": "https://sjgant80-hub.github.io/wishwood/",
       "stays_url": "https://sjgant80-hub.github.io/wishwood/stays.json",
@@ -20,7 +21,31 @@
       "review_count": 779,
       "member_since": "2026-06-24",
       "verified": true,
-      "featured": true
+      "featured": true,
+      "founding_role": "Reference implementation · stays-protocol publisher · interim coordinator"
+    },
+    {
+      "id": "smallworld",
+      "host_number": "002",
+      "name": "Small World Solar Stage & Festival",
+      "domain": "https://sjgant80-hub.github.io/smallworld/",
+      "stays_url": "https://sjgant80-hub.github.io/smallworld/stays.json",
+      "location": "Headcorn, Kent · England",
+      "lat": 51.16,
+      "lng": 0.63,
+      "owner": "Small World Solar Stage collective",
+      "founded": "early-2000s",
+      "tagline": "Small is beautiful · 100% solar-powered festival · two events a year",
+      "values": ["100%-solar","family-friendly","boutique","festival","permaculture","carbon-conscious"],
+      "stays_count": 4,
+      "price_from": 25,
+      "review_score": null,
+      "review_count": 17000,
+      "member_since": "2026-06-24",
+      "verified": true,
+      "featured": true,
+      "category": "festival",
+      "founding_role": "First festival member · Wishwood pre-pitched bell-tent partnership"
     },
     {
       "id": "fenstead-cabins",
@@ -244,12 +269,40 @@
     }
   ],
   "stats": {
-    "members": 12,
-    "stays": 33,
+    "members": 13,
+    "stays": 37,
     "countries": 3,
     "avg_review": 4.86,
     "total_reviews": 4844,
     "saved_in_fees_year_to_date": 89400,
-    "estimated_fees_saved_per_booking": 142
+    "estimated_fees_saved_per_booking": 142,
+    "categories": ["accommodation","festival"]
+  },
+  "steward": {
+    "name": "Simon Gant",
+    "org": "AI Native Solutions",
+    "role": "Interim steward + tech maintainer",
+    "term": "Until voted out by 3/4 member consensus (target: Q2 2027 at 100 members)",
+    "build_fee_total": 2400,
+    "build_fee_paid_over": "6 months · ends Dec 2026",
+    "monthly_stipend": 100,
+    "stipend_ends": "When council elected · target Oct 2026",
+    "equity": 0,
+    "exit_upside": 0,
+    "replaceable_by": "3/4 member consensus vote at any time",
+    "see": "https://sjgant80-hub.github.io/roost/governance.html"
+  },
+  "governance_engine": {
+    "name": "FallConsensus",
+    "url": "https://sjgant80-hub.github.io/fallconsensus/",
+    "mechanism": "7-dimensional Bloom vector cosine similarity · consensus detected not forced",
+    "dimensions": ["alignment","fairness","urgency","resources","risk","transparency","sustainability"],
+    "consensus_conditions": [
+      "Average similarity above threshold",
+      "Variance below maximum",
+      "Minimum pairwise similarity above floor",
+      "All three hold stable for 5 continuous seconds"
+    ],
+    "philosophy": "Convergence not votes. Mirrors not rulers. The river decides when it's still."
   }
 }

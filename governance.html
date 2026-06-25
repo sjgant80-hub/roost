@@ -231,30 +231,74 @@ footer div+div{margin-top:14px}
   </div>
 </section>
 
-<!-- 3 · VOTING -->
+<!-- 3 · FALLCONSENSUS -->
 <section>
-  <h2 class="h2"><span class="num">3</span> How <em>voting</em> works.</h2>
+  <h2 class="h2"><span class="num">3</span> How decisions actually happen · <em>FallConsensus</em>, not majority vote.</h2>
 
-  <p class="lead">Three types of decision. Three different thresholds.</p>
+  <p class="lead">Roost doesn't run majority votes. Majority is a bullying mechanism — 51% wins, 49% lose, the group is fractured, and "consensus" was never reached. We use something better.</p>
+
+  <p><strong><a href="https://sjgant80-hub.github.io/fallconsensus/" target="_blank">FallConsensus</a></strong> is a sovereign open-source mesh governance tool that <em>detects whether the group is genuinely aligned</em> across seven dimensions, rather than counting yes/no votes. It runs in the browser · no server · no central authority · P2P mesh signed positions.</p>
+
+  <div class="banner-future" style="margin:24px 0">
+    <div class="label">◊ THE 7 DIMENSIONS OF EVERY DECISION</div>
+    <div class="quote" style="font-size:18px;line-height:1.7">
+      <strong style="color:var(--linen)">alignment · fairness · urgency · resources · risk · transparency · sustainability</strong>
+      <br><br>
+      Each member rates the proposal on each dimension (a slider, not a tick). The system encodes each member's position as a <strong>7-dimensional Bloom vector</strong> derived from the prime spine {2,3,5,7,11,13,17}, then measures cosine similarity between every pair of members.
+    </div>
+  </div>
+
+  <p>Three conditions must <em>all</em> hold simultaneously for <em>five continuous seconds</em> before consensus is declared:</p>
 
   <div class="vote-flow">
     <ol>
       <li>
-        <strong>Routine operations</strong> (new member approval · suspend bad actor · monthly cost overruns)<br>
-        Simple majority of votes cast in 5 days · quorum 30% of members.
+        <strong>Average similarity ≥ threshold</strong><br>
+        The group is broadly aligned across all 7 dimensions.
       </li>
       <li>
-        <strong>Standing rule changes</strong> (membership fee · what's allowed in stays.json · co-op constitution edits)<br>
-        Two-thirds majority of votes cast in 14 days · quorum 50% of members.
+        <strong>Variance below maximum</strong><br>
+        There's no high-conflict minority being steamrolled.
       </li>
       <li>
-        <strong>Existential decisions</strong> (dissolve roost · merge with another co-op · replace tech provider · change ownership structure)<br>
-        Three-quarters majority of <em>all members</em> in 30 days · no quorum exception.
+        <strong>Minimum pairwise similarity above floor</strong><br>
+        No two members are wildly opposed — even the most divergent pair shares meaningful alignment.
       </li>
     </ol>
   </div>
 
-  <p>Voting is open and signed: every vote shows who voted what. No secret ballots — full transparency is the deal.</p>
+  <p>If all three hold stable for 5 seconds, <strong>consensus is declared</strong>. If not, the system says <em>"not yet"</em> — which is itself valuable information. The decision waits. The group iterates. Real alignment is reached, or the proposal dies.</p>
+
+  <div class="callout">
+    <strong>The key shift:</strong> traditional voting asks <em>"how many agree?"</em> and accepts 51% as a mandate. FallConsensus asks <em>"is the group genuinely aligned?"</em> and only permits action when convergence is real. <em>"Convergence, not votes. Mirrors, not rulers. The river decides when it's still."</em>
+  </div>
+
+  <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--linen);margin:30px 0 10px;font-weight:400">Three decision tiers · same engine, different thresholds</h3>
+
+  <table class="money-table">
+    <thead><tr><th>Decision type</th><th>Examples</th><th>Threshold + Time</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Routine ops</strong></td>
+        <td style="font-size:13px;color:var(--text)">New host approval · suspend bad actor · monthly cost variance</td>
+        <td style="font-size:13px">Standard consensus · 30% quorum · 5-day window</td>
+      </tr>
+      <tr>
+        <td><strong>Standing rule</strong></td>
+        <td style="font-size:13px;color:var(--text)">Membership fee · what's allowed in stays.json · constitution edits</td>
+        <td style="font-size:13px">Tighter consensus · 50% quorum · 14-day window</td>
+      </tr>
+      <tr>
+        <td><strong>Existential</strong></td>
+        <td style="font-size:13px;color:var(--text)">Dissolve roost · merge · replace steward · change ownership structure</td>
+        <td style="font-size:13px">High consensus · all members · 30-day window · no quorum exception</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Every position is signed and visible — no secret ballots. The full similarity matrix is published with every decision · you can see exactly where the group agreed and where it didn't.</p>
+
+  <p style="margin-top:18px"><a href="https://sjgant80-hub.github.io/fallconsensus/" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ember);letter-spacing:0.12em;text-transform:uppercase">▸ Try FallConsensus live →</a></p>
 </section>
 
 <!-- 4 · TIMELINE -->
@@ -274,7 +318,7 @@ footer div+div{margin-top:14px}
     <div class="timeline-step now">
       <div class="when">July-September 2026 · IN PROGRESS</div>
       <h3>Phase 2 · First 50 founding hosts join</h3>
-      <p>Hand-picked from word-of-mouth, this LinkedIn post, and Wishwood's referral. Each pays £20/mo. Simon (AI Native Solutions) acts as <em>interim tech provider + coordinator</em> · charges <strong>£1,200/quarter</strong> from membership pool (visible in the financial table below). Members vote on everything else.</p>
+      <p>Hand-picked from word-of-mouth, this LinkedIn post, and the Wishwood ↔ Smallworld Kent cluster. Each pays £20/mo. <strong>Simon Gant (AI Native Solutions) acts as named interim Steward + tech maintainer</strong> · charges <strong>£100/mo stipend</strong> + the build fee schedule (visible below). Members reach decisions via FallConsensus on everything else.</p>
     </div>
 
     <div class="timeline-step future">
@@ -290,9 +334,9 @@ footer div+div{margin-top:14px}
     </div>
 
     <div class="timeline-step future">
-      <div class="when">Q2 2027 · DECIDED BY VOTE</div>
-      <h3>Phase 5 · 100 members · vote to replace tech provider (or not)</h3>
-      <p>At 100 hosts, members can vote (3/4 majority) to fire Simon and bring in any other tech provider · or keep Simon at a renegotiated rate · or run code maintenance via the council directly. Simon hands over all keys + admin access on member request, no resistance, no clawback.</p>
+      <div class="when">Q2 2027 · DECIDED BY FALLCONSENSUS</div>
+      <h3>Phase 5 · 100 members · reach consensus to retain or replace Steward</h3>
+      <p>At 100 hosts, members run a FallConsensus session on the Steward role · keep Simon at a renegotiated rate · replace him with a different tech provider · or hand maintenance to the council directly. As Simon puts it: <em>"I'll be steward of roost until I'm voted out lol."</em> He hands over all keys + admin access on consensus decision, no resistance, no clawback.</p>
     </div>
 
     <div class="timeline-step future">
