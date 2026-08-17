@@ -1,0 +1,12 @@
+{
+  "name": "roost",
+  "version": "1.0.0",
+  "description": "stays-protocol aggregator worker + cooperative stays marketplace — discovers hosts, indexes their stays.json manifests, sends guests direct to the host booking page (zero booking fees).",
+  "type": "module",
+  "main": "worker.js",
+  "author": "Simon Gant (AI Native Solutions)",
+  "license": "MIT",
+  "scripts": {
+    "test": "node test.mjs"
+  }
+}
